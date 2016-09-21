@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<link href="mobile_interface_catherine.css" rel="stylesheet" type="text/css">
+</head>
+<body class="center">
+	<span style="color:#2f4866">
+    <center>Start Location: <input type="text" > </center>
+	<h1 class="center">
+    	<select id="select"  onchange="location = this.options[this.selectedIndex].value;">
+        	<option value="default">
+            Enter your destination here </option>
+			<option disabled>
+            Recent destinations:
+            </option>
+            <option value="rank.html">
+            College St.</option>
+			<option value="rank.html">
+            Bloor St. West</option>
+			<option value="rank.html">
+            Yonge St.</option>
+			<option value="rank.html">
+            Spadina Av.</option>
+		</select>
+    	<img src="starter screen.png" width="480" height="800" alt=""/>
+        <button id="settings" onClick="location.href='settings_intro.html'">
+        Settings
+        </button>
+ 
+	</h1>
+    </span>
+</body>
+</html>

@@ -1,0 +1,52 @@
+@charset "utf-8";
+.center{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+body{
+	font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#title {
+	font-size:36px;
+	text-align:center;
+}
+
+#bodydiv
+{
+	margin-left:auto;
+	margin-right:auto;
+	width: 350px;
+	height: 650px;
+	background-color: #b3e5f9;
+	font-size:14px;
+}
+
+#input{
+	font-size:14px;
+}
+
+#button{
+	position: fixed;
+	margin-left: 65px;
+	width: 200px;
+	height: 50px;
+	font-size: 16px;
+	background-color: white;
+	border-radius: 10px;
+	border-width: 5px;
+	box-shadow: none;
+}
+
+#back{
+	top:575px;
+}
+
+#intro{
+	top:250px;
+}
+
+img{
+	opacity: 0.5;
+}

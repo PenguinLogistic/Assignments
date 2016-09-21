@@ -1,0 +1,90 @@
+        doneRobots = list()
+        oldRobot = list()
+        newRobotList = list()
+        newOrderList = list()
+        busyRobots = list()
+        #prodloc
+        #stationloc
+        #startloc
+        #newloc
+        newRobot = list()
+        newTime = 0;
+        '''there are no more orders'''
+        if not self.get_orders():
+            '''find max_time then fastforward time! Here there is guaranteed to be a
+               robot on delivery otherwise we'd be in the goal state'''
+            for robot in self.get_robot_status():
+                if robot[1] == 'on_delivery':
+                    if newTime == 0:
+                        newTime = robot[3]
+                    elif newTime > robot[3]:
+                        newTime = robot[3]
+                    elif newTime == robot[3]:
+                        doneRobots.append(robot)
+                    else:
+                        pass
+                else:
+                    pass
+            '''compute new list to edit robot statuses to idle'''
+            newRobotList = [item for item in self.get_robot_status() if item not in doneRobots]
+            if not newRobotList:
+                pass
+            else:
+                for idler in doneRobots:
+                    idler[1] = "idle"
+                    idler.pop()
+                newRobotList = newRobotList + doneRobots
+                '''also compute the cost of the action'''
+                cost = newTime-self.get_time()
+                States.append( warehouse("move_Forward", self.gval+cost, self.plist, self.slist, newTime, self.get_orders, newRobotList, self) )
+        #orders exist here
+        else:
+            #there are orders here, we should check for idle robots
+            #should be a simple double loop. one loop to find idle robits
+            #another loop to show the states for the'''
+            for rstat in self.get_robot_status():
+                if rstat[1] == "idle":
+                    for order in self.get_orders():
+                        newOrderList = self.get_orders().remove(order)#note brackets around self.get_orders
+                        newRobot = rstat
+                        newRobot[1] = "on_delivery" #change robot to on_delivery
+                        for product in self.plist:
+                            for station in self.slist:
+                                if order[0] == product[0] and order[1] == station[0]:
+                                    startloc = rstat[2]
+                                    prodloc = product[1]
+                                    stationloc = station[1]
+                                    newloc = ((abs(startloc[0]-prodloc[0]) + abs(prodloc[0]-stationloc[0])), (abs(startloc[1]-prodloc[1]) + abs(prodloc[1] - stationloc[1])) )
+                                    newRobot[2] = stationloc[1] #change rstat's location to the finish location
+                                    newRobot.append(newloc[0] + newloc[1] + self.get_time()) #append an extra value for the finish time
+                                    for i in self.get_robot_status():
+                                        if i[0] == newRobot[0]:
+                                            newRobotList = self.get_robot_status()
+                                            newRobotList[newRobotList.index(i)] = newRobot
+                                    States.append(warehouse("deliver", self.gval, self.plist, self.slist, self.get_time, newOrderList, newRobotList, self))
+                #append the rest of the busy robots to the busyRobots list
+                else:
+                    busyRobots.append(rstat)
+            if not busyRobots:
+                pass
+            else:
+                for robot in busyRobots:
+                    if newTime == 0:
+                        newTime = robot[3]
+                    elif newTime > robot[3]:
+                        newTime = robot[3]
+                    elif newTime == robot[3]:
+                        doneRobots.append(robot)
+                    else:
+                        pass  
+                for idler in doneRobots:
+                    newRobotList = [item for item in self.get_robot_status() if item not in idler]
+                    idler[1] = "idle"
+                    idler.pop()
+                    newRobotList = newRobotList + doneRobots
+                    #also compute the cost of the action
+                    cost = newTime-self.get_time()
+                    print("move_Forward", self.gval+cost, self.plist, self.slist, newTime, self.orders, newRobotList)
+                    States.append( warehouse("move_Forward", self.gval+cost, self.plist, self.slist, newTime, self.get_orders, newRobotList, self) )
+        return States
+    
